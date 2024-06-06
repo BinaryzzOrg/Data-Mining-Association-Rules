@@ -57,5 +57,6 @@ public class LinkItem {
 		setHeadNode(insertNode);
 		setTailPointer(insertNode);
 		return;
-	}
+	}// end method
+
 }// end class

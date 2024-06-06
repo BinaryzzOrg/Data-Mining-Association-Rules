@@ -5,8 +5,9 @@ public class Main {
 	// === FIELD VARIABLES === //
 	static LinkItem items = new LinkItem();
 	static ListofDataSet data = new ListofDataSet();
-	// alaws pa pangcheck if empty outer boolean muna temp
-	static boolean isListEmpty = true;
+
+	public static boolean isEmptyItemList = true;
+	public static boolean isEmptyDataSetList = true;
 
 	// === MAIN METHOD === //
 	public static void main(String[] args) {
@@ -47,12 +48,16 @@ public class Main {
 
 	public static void Menu() {
 		// @formatter:off
-		String isListEmptyError = "Item List is currently empty, Please add items first";
+		String isListEmptyError = "\n[Item List is currently empty, Please add items first]";
 		int ItemLimit = 10;
+		
 		System.out.print(printMenuChoices());
-
 		switch (checkUserInputInteger(printMenuChoices())) {
 		case 1: {// Item List
+			if (!isEmptyItemList) {
+				System.out.println("Item List has already been created.");
+			}//end if
+			
 			// enter only input not working yet
 			System.out.println("Enter 10 item names (Or Press Enter To Go Back)");
 			for (int i = 1; i < ItemLimit + 1; i++) {
@@ -65,11 +70,11 @@ public class Main {
 				
 				items.addToList(validateInput);
 			}//end for
-			isListEmpty = false;
+			isEmptyItemList = false;
 			break;
 		}
 		case 2: {//
-			if (isListEmpty) {
+			if (isEmptyItemList) {
 				System.out.print(isListEmptyError);
 				break;
 			}//end if
@@ -78,79 +83,57 @@ public class Main {
 			
 			//may if contains kasi di ko prinint ung list ng items so need malaman if kagaya sa list before mapunta sa datasets
 			System.out.println("Enter items to dataset (Or Press Enter To Go Back");
-			int itemCount = items.count();
-			for (int i = 0; i < itemCount; i++) {
+			for (int i = 0; true; i++) {
 				System.out.print(i+ ") ");
 				String validateInput = checkUserInputString("Select items on ItemList to enter ");
 				if(validateInput.isEmpty()) break;
-				if (!items.ifContains(validateInput)) {
-					System.out.print("[That item is not available in the Item List]");
-				}//end if
+				if (items.ifContains(validateInput)) {
 					datasets.addItemToDataSet(validateInput);
+				}else {
+					System.out.print("[That item is not available in the Item List]");
+					i--;
+				}//end if else
 			}//end for
 			data.addDataSet(datasets);
+			isEmptyDataSetList = false;
 			break;
 		}
 		case 3: {// delete data set
-				if (isListEmpty) {
-					System.out.print(isListEmptyError);
+				if (isEmptyItemList || isEmptyDataSetList) {
+					System.out.println((isEmptyDataSetList && !isEmptyItemList) ? "\n[Please Create a Data Set List First.]"
+							: "\n[Please Create an Item List First.]");
 					break;
 				}//end if
+				
 				System.out.print("Enter the position of the data set you want to delete: (1-?) need position shit here\nposition>");
-				int position = checkUserInputInteger("position>");
+				int position = checkUserInputInteger("Position>");
 				data.deleteDataSet(position);
 			break;
 		}
 		case 4: {// display data set
+			if (isEmptyItemList) {
+				System.out.print(isListEmptyError);
+				break;
+			}//end if
 				data.display();
 			break;
 		}
 		case 5: {// display support value
-			String supportValueMenu = """
-				\n
-				+=============================+
-				| --  Choose on Operation  -- |
-				+=============================+
-				| (1) : Support {A}           |
-				| (2) : Support {B,A}         |
-				| (3) : Go Back               |
-				+=============================+
-				Select an operation>\s""";
-			System.out.print(supportValueMenu);
-			
-			int choice = checkUserInputInteger(supportValueMenu);
-			switch (choice) {
-				case 1: {
-					System.out.print("Enter item A: ");
-					String A = checkUserInputString("Enter item A: ");
-					data.displaySupportOneValue(A);
+				if (isEmptyItemList || isEmptyDataSetList) {
+					System.out.println((isEmptyDataSetList && !isEmptyItemList) ? "\n[Please Create a Data Set List First.]"
+							: "\n[Please Create an Item List First.]");
 					break;
-				}
-				case 2: {
-					System.out.print("Enter item B: ");
-					String B = checkUserInputString("Enter item B: ");
-					System.out.print("Enter item A: ");
-					String A = checkUserInputString("Enter item A: ");
-					data.displaySupportValue(B, A);
-					break;
-				}
-				default:
-					// @formatter:off
-					System.out.println("""
-							\n
-							⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃ 
-							┇ Error:                                    ┇
-							┇ Input is not a valid Menu choice.         ┇
-							⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
-							┇ Msg:                                      ┇
-							┇ Please enter only 1 to 7 as input         ┇
-							⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
-							""");
-					// @formatter:on
-			}// end switch
-			break;
+				}//end if
+				
+				supportValueMenu();
+				break;
 		}
 		case 6: {// determine association
+			if (isEmptyItemList || isEmptyDataSetList) {
+				System.out.println((isEmptyDataSetList && !isEmptyItemList) ? "\n[Please Create a Data Set List First.]"
+						: "\n[Please Create an Item List First.]");
+				break;
+			} // end if
 			System.out.print("Enter item B: ");
 			String Asso_B = checkUserInputString("Enter item B: ");
 			System.out.print("Enter item A: ");
@@ -181,6 +164,51 @@ public class Main {
 		System.out.println("\n");
 		Menu();
 		// @formatter:on
+	}// end method
+
+	public static void supportValueMenu() {
+		String supportValueMenu = """
+				\n
+				+==============================+
+				|   --  Choose on Option  --   |
+				+==============================+
+				| (1) : Support {A}            |
+				| (2) : Support {B,A}          |
+				| (3) : Go Back                |
+				+==============================+
+				Select an option>\s""";
+		System.out.print(supportValueMenu);
+
+		int choice = checkUserInputInteger(supportValueMenu);
+		switch (choice) {
+		case 1: {
+			System.out.print("Enter item A: ");
+			String A = checkUserInputString("Enter item A: ");
+			data.displaySupportOneValue(A);
+			break;
+		}
+		case 2: {
+			System.out.print("Enter item B: ");
+			String B = checkUserInputString("Enter item B: ");
+			System.out.print("Enter item A: ");
+			String A = checkUserInputString("Enter item A: ");
+			data.displaySupportValue(B, A);
+			break;
+		}
+		default:
+			// @formatter:off
+			System.out.println("""
+					\n
+					⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
+					┇ Error:                                   ┇
+					┇ Input is not a valid Menu choice.        ┇
+					⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
+					┇ Msg:                                     ┇
+					┇ Please enter only 1 to 7 as input        ┇
+					⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
+					""");
+			// @formatter:on
+		}// end switch
 	}// end method
 
 	/*
@@ -241,7 +269,6 @@ public class Main {
 				fixed += str.charAt(i);
 			} // end if
 		} // end for
-
 		return fixed;
 	}// end method
 
@@ -254,11 +281,11 @@ public class Main {
 	public static String printCustomError(String type) {
 		// @formatter:off
 					return "\n" +
-								"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃\n" +
-								"┇ Warning: Input is not a "+ type +" value.    ┇\n" +
-								"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃\n" +
-								"┇ Notice: Please only enter a "+ type +" value.┇\n" +
-								"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃\n";
+							"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃\n" +
+							"┇ Warning: Input is not a "+ type +" value.    ┇\n" +
+							"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃\n" +
+							"┇ Notice: Please only enter a "+ type +" value.┇\n" +
+							"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃\n";
 				// @formatter:on
 	}// end method
 
