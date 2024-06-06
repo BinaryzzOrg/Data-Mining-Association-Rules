@@ -58,44 +58,46 @@ public class Main {
 				System.out.println("Item List has already been created.");
 			} // end if
 
-			// enter only input not working yet
-
-			System.out.println("\nEnter 10 item names (Enter -1 to go back)");
+			// @formatter:off
+			String itemItemNamePrompt = """
+					\n
+					+=================================================+
+					|    Enter 10 item names (Enter -1 to go back)    |
+					+=================================================+
+				    """;
+			// @formatter:on
+			System.out.print(itemItemNamePrompt);
 			for (int i = 1; i < ItemLimit + 1; i++) {
-				System.out.print(i + ") ");
-				String validateInput = checkUserInputString("Enter 10 item names (Enter -1 to go back)");
+				System.out.print("| " + i + ") ");
+				String validateInput = checkUserInputString(itemItemNamePrompt);
 				if (validateInput.equals("-1"))
 					break;
 
 				isEmptyItemList = false;
 				items.addToList(validateInput);
 			} // end for
+			System.out.print("+=================================================+");
 			break;
 		}
 		case 2: {//
-
 			if (isEmptyItemList) {
 				System.out.print(isListEmptyError);
 				break;
 			} // end if
 
 			DataSetNode datasets = new DataSetNode();
-
 			items.display();
-			// may if contains kasi di ko prinint ung list ng items so need malaman if
-			// kagaya sa list before mapunta sa datasets
-
 			// @formatter:off
 			String itemNumberPrompt = """
-					\n
-					+======================================================================+
-					| Select the number that corresponds to the item (Enter -1 to go back) |
-					+======================================================================+
+					+=========================================================================+
+					| --  Select the number that corresponds to the item in the item list  -- |
+					|     --  Once done, Press -1 to create the data set and go back  --      |
+					+=========================================================================+
 				    """;
 
 			System.out.print(itemNumberPrompt);
 			for (int i = 0; true; i++) {
-				System.out.print((i + 1) + ") ");
+				System.out.print("| "+ (i + 1) + ") ");
 				int itemPosition = checkUserInputInteger(itemNumberPrompt);
 				if (itemPosition == -1)break;
 
@@ -103,7 +105,7 @@ public class Main {
 				String temp = items.getItem(itemPosition);
 				datasets.addItemToDataSet(temp);
 			} // end for
-			System.out.println("+======================================================================+");
+			System.out.print("+======================================================================+");
 			data.addDataSet(datasets);
 			break;
 			
@@ -296,13 +298,13 @@ public class Main {
 	 */
 	public static String printCustomError(String type) {
 		// @formatter:off
-					return "\n" +
-							"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃\n" +
-							"┇ Warning: Input is not a "+ type +" value.    ┇\n" +
-							"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃\n" +
-							"┇ Notice: Please only enter a "+ type +" value.┇\n" +
-							"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃";
-				// @formatter:on
+		return "\n" 
+				+ "+================================================+\n" 
+				+ "| Warning: Input is not a " + type+ " value.         |\n" 
+				+ "+================================================+\n"
+				+ "| Notice: Please only enter a " + type + " value.     |\n"
+				+ "+================================================+\n";
+		// @formatter:on
 	}// end method
 
 }// end class

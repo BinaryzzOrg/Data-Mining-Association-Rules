@@ -105,7 +105,7 @@ public class ListofDataSet {
 		computedValue = numberOfOccurence / countLength;
 		computedValuePercent = computedValue * 100;
 		//@formatter:off
-			System.out.println("\n+========[SUPPORT VALUE]=======+\n"
+			System.out.print("\n+========[SUPPORT VALUE]=======+\n"
 							 + "Total # of Occurence: " + numberOfOccurence
 							 + "\nTotal # of Data Set: " + countLength
 							 + "\n\n>Support { " + item + " }" 
@@ -149,7 +149,7 @@ public class ListofDataSet {
 		computedValue = numberOfOccurence / countLength;
 		computedValuePercent = computedValue * 100;
 		//@formatter:off
-			System.out.println("\n+========[SUPPORT VALUE]=======+\n"
+			System.out.print("\n+========[SUPPORT VALUE]=======+\n"
 							 + "Total # of Occurence of { " + itemOne + ", " + itemTwo +" }: " + numberOfOccurence
 							 + "\nTotal # of Data Set: " + countLength
 							 + "\n\n>Support { " + itemOne + ", " + itemTwo + " }" 
@@ -221,7 +221,7 @@ public class ListofDataSet {
 
 		computedLiftValue = supportValueOfBoth / (supportValueOfB * supportValueOfA);
 		//@formatter:off
-			System.out.println("\n+========[CONFIDENCE VALUE]========+\n"
+			System.out.print("\n+========[CONFIDENCE VALUE]========+\n"
 							 + "Total # of Occurence of { " + itemOne + "," + itemTwo +" }: " + numberOfBothOccurence
 							 + "\nTotal # of Occurence of { " + itemOne + " }: " + numberOfOccurenceOfB
 							 + "\n\n>Condifence { " + itemTwo + "-> " + itemOne + " }" 
@@ -255,7 +255,7 @@ public class ListofDataSet {
             } else {
 				System.out.println("+=================================+\n"
 								 + "There is no association! \nLift Value: " + String.format("%.2f", computedLiftValue) + " < 1\n" 
-								 + "+=================================+\n");
+								 + "+=================================+");
 			}
 			
 			//@formatter:on
