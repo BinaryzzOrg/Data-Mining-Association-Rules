@@ -44,6 +44,6 @@ public class DataSetNode {
 		setHeadPointer(insertItem);
 		setTailPointer(insertItem);
 		return;
-	}
+	}// end method
 
 }// end class

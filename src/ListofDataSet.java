@@ -38,22 +38,22 @@ public class ListofDataSet {
 
 	public void deleteDataSet(int position) {
 		int counter = 1;
-		if (position == 1) {
-			setHeadPointer(this.headPointer.getNextPointer());
-			System.out.println("Successfuly deleted!");
+		if (position < 1 || position > countLength) {
+			System.out.println("Invalid Position!");
 			return;
 		}
-		int DataListLength = countDataSetList(this.headPointer);
-		if (position == DataListLength) {
+		if (position == 1) {
+			setHeadPointer(this.headPointer.getNextPointer());
+		}
+		if (position == countLength) {
 			for (DataSetNode start = this.headPointer; start != null; start = start.getNextPointer()) {
 				if (counter == position - 1) {
-					System.out.println(counter);
 					start.setNextPointer(null);
 					setTailPointer(start);
 				}
 				counter++;
 			}
-		} else {
+		} else if (position > 1) {
 			for (DataSetNode start = this.headPointer; start != null; start = start.getNextPointer()) {
 				if (counter == position - 1) {
 					start.setNextPointer(start.getNextPointer().getNextPointer());
@@ -61,19 +61,11 @@ public class ListofDataSet {
 				counter++;
 			}
 		}
-
+		countLength--;
+		if (countLength == 0)
+			Main.isEmptyDataSetList = true;
 		System.out.println("Successfuly deleted!");
 
-	}
-
-	private int countDataSetList(DataSetNode countDataSetList) {
-		int countList = 0;
-		DataSetNode head = this.headPointer;
-		while (head != null) {
-			countList++;
-			head = head.getNextPointer();
-		}
-		return countList;
 	}
 
 	// print ung datasets
@@ -112,11 +104,17 @@ public class ListofDataSet {
 
 		computedValue = numberOfOccurence / countLength;
 		computedValuePercent = computedValue * 100;
-		System.out.println("\n+========[SUPPORT VALUE]=======+\n" + "Total # of Occurence: " + numberOfOccurence
-				+ "\nTotal # of Data Set: " + countLength + "\n\n>Support { " + item + " }" + " = " + numberOfOccurence
-				+ " / " + countLength + " = " + String.format("%.4f", computedValue) + "\n>Support { " + item + " }"
-				+ " = " + String.format("%.2f", computedValuePercent) + "% " + "\n+=============================+\n");
-		return computedValue;
+		//@formatter:off
+			System.out.println("\n+========[SUPPORT VALUE]=======+\n"
+							 + "Total # of Occurence: " + numberOfOccurence
+							 + "\nTotal # of Data Set: " + countLength
+							 + "\n\n>Support { " + item + " }" 
+							 + " = " + numberOfOccurence + " / " + countLength + " = " + String.format("%.4f", computedValue)
+							 + "\n>Support { " + item + " }" 
+							 + " = " + String.format("%.2f", computedValuePercent) + "% " 
+							 + "\n+=============================+\n");
+			return computedValue;
+			//@formatter:on
 	}
 
 	public double displaySupportValue(String itemOne, String itemTwo) {
@@ -150,12 +148,17 @@ public class ListofDataSet {
 
 		computedValue = numberOfOccurence / countLength;
 		computedValuePercent = computedValue * 100;
-		System.out.println("\n+========[SUPPORT VALUE]=======+\n" + "Total # of Occurence of { " + itemOne + ", "
-				+ itemTwo + " }: " + numberOfOccurence + "\nTotal # of Data Set: " + countLength + "\n\n>Support { "
-				+ itemOne + ", " + itemTwo + " }" + " = " + numberOfOccurence + " / " + countLength + " = "
-				+ String.format("%.4f", computedValue) + "\n>Support { " + itemOne + ", " + itemTwo + " }" + " = "
-				+ String.format("%.2f", computedValuePercent) + "% " + "\n+=============================+\n");
-		return computedValue;
+		//@formatter:off
+			System.out.println("\n+========[SUPPORT VALUE]=======+\n"
+							 + "Total # of Occurence of { " + itemOne + ", " + itemTwo +" }: " + numberOfOccurence
+							 + "\nTotal # of Data Set: " + countLength
+							 + "\n\n>Support { " + itemOne + ", " + itemTwo + " }" 
+							 + " = " + numberOfOccurence + " / " + countLength + " = "  + String.format("%.4f", computedValue)
+							 + "\n>Support { " + itemOne + ", " + itemTwo + " }" 
+							 + " = " + String.format("%.2f", computedValuePercent) + "% " 
+							 + "\n+=============================+\n");
+			return computedValue;
+			//@formatter:on
 	}
 
 	public void determineAssociation(String itemOne, String itemTwo) {
@@ -217,28 +220,46 @@ public class ListofDataSet {
 		double supportValueOfA = (numberOfOccurenceOfA / countLength);
 
 		computedLiftValue = supportValueOfBoth / (supportValueOfB * supportValueOfA);
-		System.out.println("\n+========[CONFIDENCE VALUE]========+\n" + "Total # of Occurence of { " + itemOne + ","
-				+ itemTwo + " }: " + numberOfBothOccurence + "\nTotal # of Occurence of { " + itemOne + " }: "
-				+ numberOfOccurenceOfB + "\n\n>Condifence { " + itemTwo + "-> " + itemOne + " }" + " = "
-				+ numberOfBothOccurence + " / " + numberOfOccurenceOfB + "\n>Condifence { " + itemTwo + "-> " + itemOne
-				+ " }" + " = " + String.format("%.2f", computedConfidenceValue) + "\n"
-				+ "\n+===========[LIFT VALUE]===========+\n" + "Total # of Occurence of { " + itemOne + "," + itemTwo
-				+ " }: " + numberOfBothOccurence + "\nTotal # of Occurence of { " + itemTwo + " }: "
-				+ numberOfOccurenceOfB + "\nTotal # of Occurence of { " + itemOne + " }: " + numberOfOccurenceOfA
-				+ "\n\n>Lift { " + itemTwo + "-> " + itemOne + " }" + " = (" + numberOfBothOccurence + " / "
-				+ countLength + ") / " + " ((" + numberOfOccurenceOfB + " / " + countLength + ") *" + " ("
-				+ numberOfOccurenceOfA + " / " + countLength + ")) " + "\n>Lift { " + itemTwo + "-> " + itemOne + " }"
-				+ " = " + String.format("%.2f", supportValueOfBoth) + " / " + " ("
-				+ String.format("%.2f", supportValueOfB) + " *" + " " + String.format("%.2f", supportValueOfA) + ") "
-				+ "\n>Lift { " + itemTwo + "-> " + itemOne + " }" + " = " + String.format("%.2f", computedLiftValue));
-		if (computedLiftValue >= 1) {
-			System.out.println("+=================================+\n" + "There is an association {" + itemTwo + " -> "
-					+ itemOne + "}" + "\n+=================================+\n");
-		} else {
-			System.out.println("+=================================+\n" + "There is no association! \nLift Value: "
-					+ String.format("%.2f", computedLiftValue) + " < 1\n" + "+=================================+\n");
-		}
-	}
+		//@formatter:off
+			System.out.println("\n+========[CONFIDENCE VALUE]========+\n"
+							 + "Total # of Occurence of { " + itemOne + "," + itemTwo +" }: " + numberOfBothOccurence
+							 + "\nTotal # of Occurence of { " + itemOne + " }: " + numberOfOccurenceOfB
+							 + "\n\n>Condifence { " + itemTwo + "-> " + itemOne + " }" 
+							 + " = " + numberOfBothOccurence + " / " + numberOfOccurenceOfB 
+							 + "\n>Condifence { " + itemTwo + "-> " + itemOne + " }" 
+							 + " = " + String.format("%.2f", computedConfidenceValue)
+							 + "\n"
+							 + "\n+===========[LIFT VALUE]===========+\n"
+							 + "Total # of Occurence of { " + itemOne + "," + itemTwo +" }: " + numberOfBothOccurence
+							 + "\nTotal # of Occurence of { " + itemTwo + " }: " + numberOfOccurenceOfB
+							 + "\nTotal # of Occurence of { " + itemOne + " }: " + numberOfOccurenceOfA
+							 + "\n\n>Lift { " + itemTwo + "-> " + itemOne + " }" 
+							 + " = (" + numberOfBothOccurence + " / " + countLength + ") / "  
+							 + " ((" + numberOfOccurenceOfB + " / " + countLength + ") *" 
+							 + " (" + numberOfOccurenceOfA + " / " + countLength + ")) " 
+							 + "\n>Lift { " + itemTwo + "-> " + itemOne + " }" 
+							 + " = " + String.format("%.2f", supportValueOfBoth) + " / "  
+							 + " (" + String.format("%.2f", supportValueOfB) + " *" 
+							 + " " + String.format("%.2f", supportValueOfA) + ") " 
+							 + "\n>Lift { " + itemTwo + "-> " + itemOne + " }" 
+							 + " = " + String.format("%.2f", computedLiftValue));
+			if(computedLiftValue > 1) {
+				System.out.println("+=================================+\n"
+								 + "There is an association {" + itemTwo + " -> " + itemOne + "}"
+								 + "\n+=================================+\n");
+			} else if (computedLiftValue == 1) {
+           	   System.out.println("+=================================+\n"
+								 + "There is no association! \nLift Value: " + String.format("%.2f", computedLiftValue) + " = 1\n" 
+								 + "+=================================+\n");
+			
+            } else {
+				System.out.println("+=================================+\n"
+								 + "There is no association! \nLift Value: " + String.format("%.2f", computedLiftValue) + " < 1\n" 
+								 + "+=================================+\n");
+			}
+			
+			//@formatter:on
+	}// end method
 
 	public boolean ifContains(String name, ItemNode headNode) {
 		for (ItemNode start = headNode; start != null; start = start.getNextPointer()) {
@@ -246,5 +267,6 @@ public class ListofDataSet {
 				return true;
 		}
 		return false;
-	}
+	}// end method
+
 }// end class
