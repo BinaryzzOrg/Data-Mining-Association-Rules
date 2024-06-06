@@ -47,20 +47,22 @@ public class Main {
 
 	public static void Menu() {
 		// @formatter:off
+		String isListEmptyError = "Item List is currently empty, Please add items first";
 		int ItemLimit = 10;
 		System.out.print(printMenuChoices());
 
 		switch (checkUserInputInteger(printMenuChoices())) {
 		case 1: {// Item List
 			// enter only input not working yet
-			System.out.println("Enter 10 item names (Enter ng walang tinatype to break agad if ayaw ng saktong 10 items");
+			System.out.println("Enter 10 item names (Or Press Enter To Go Back)");
 			for (int i = 1; i < ItemLimit + 1; i++) {
-				System.out.print(i+ ") ");
-				String validateInput = checkUserInputString("Enter 10 Items:");
+				System.out.print(i+ ") ");				
+				String validateInput = checkUserInputString("Enter 10 item names (Or Press Enter To Go Back)");
 				if (validateInput.isEmpty()) {
-					System.out.println("test on menu method");
+					System.out.println("d nagana for somereason, pinasok kolang sa checkUserInput eh");
 					break;
 				}//end if
+				
 				items.addToList(validateInput);
 			}//end for
 			isListEmpty = false;
@@ -68,38 +70,97 @@ public class Main {
 		}
 		case 2: {//
 			if (isListEmpty) {
-				System.out.println("Item List is currently empty, Please add items first");
+				System.out.print(isListEmptyError);
 				break;
-			}
+			}//end if
+			
 			DataSetNode datasets = new DataSetNode();
 			
 			//may if contains kasi di ko prinint ung list ng items so need malaman if kagaya sa list before mapunta sa datasets
-			System.out.println("Enter items to dataset (Enter ng walang tinatype to break agad if ayaw ng saktong 10 items");
-			for (int i = 0; true; i++) {
-				System.out.print( (i + 1)  + " Item>> ");
+			System.out.println("Enter items to dataset (Or Press Enter To Go Back");
+			int itemCount = items.count();
+			for (int i = 0; i < itemCount; i++) {
+				System.out.print(i+ ") ");
 				String validateInput = checkUserInputString("Select items on ItemList to enter ");
 				if(validateInput.isEmpty()) break;
 				if (!items.ifContains(validateInput)) {
-					System.out.println("Not Found");
+					System.out.print("[That item is not available in the Item List]");
 				}//end if
 					datasets.addItemToDataSet(validateInput);
 			}//end for
 			data.addDataSet(datasets);
 			break;
 		}
-		case 3: {//
+		case 3: {// delete data set
+				if (isListEmpty) {
+					System.out.print(isListEmptyError);
+					break;
+				}//end if
+				System.out.print("Enter the position of the data set you want to delete: (1-?) need position shit here\nposition>");
+				int position = checkUserInputInteger("position>");
+				data.deleteDataSet(position);
 			break;
 		}
-		case 4: {//
+		case 4: {// display data set
+				data.display();
 			break;
 		}
-		case 5: {//
+		case 5: {// display support value
+			String supportValueMenu = """
+				\n
+				+=============================+
+				| --  Choose on Operation  -- |
+				+=============================+
+				| (1) : Support {A}           |
+				| (2) : Support {B,A}         |
+				| (3) : Go Back               |
+				+=============================+
+				Select an operation>\s""";
+			System.out.print(supportValueMenu);
+			
+			int choice = checkUserInputInteger(supportValueMenu);
+			switch (choice) {
+				case 1: {
+					System.out.print("Enter item A: ");
+					String A = checkUserInputString("Enter item A: ");
+					data.displaySupportOneValue(A);
+					break;
+				}
+				case 2: {
+					System.out.print("Enter item B: ");
+					String B = checkUserInputString("Enter item B: ");
+					System.out.print("Enter item A: ");
+					String A = checkUserInputString("Enter item A: ");
+					data.displaySupportValue(B, A);
+					break;
+				}
+				default:
+					// @formatter:off
+					System.out.println("""
+							\n
+							⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃ 
+							┇ Error:                                    ┇
+							┇ Input is not a valid Menu choice.         ┇
+							⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
+							┇ Msg:                                      ┇
+							┇ Please enter only 1 to 7 as input         ┇
+							⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
+							""");
+					// @formatter:on
+			}// end switch
 			break;
 		}
-		case 6: {//
+		case 6: {// determine association
+			System.out.print("Enter item B: ");
+			String Asso_B = checkUserInputString("Enter item B: ");
+			System.out.print("Enter item A: ");
+			String Asso_A = checkUserInputString("Enter item A: ");
+			data.determineAssociation(Asso_B, Asso_A);
 			break;
 		}
-		case 7: {//
+		case 7: {// exit
+			System.out.println(":: Exiting now...");
+			System.exit(0);
 			break;
 		}
 		default:
@@ -175,63 +236,13 @@ public class Main {
 		for (int i = 0; i < str.length(); i++) {
 			if (str.charAt(i) == ' ' && str.charAt(i + 1) != ' ') {
 				fixed += str.charAt(i);
-			}
+			} // end if
 			if (str.charAt(i) != ' ') {
 				fixed += str.charAt(i);
-			}
-
+			} // end if
 		} // end for
 
 		return fixed;
-	}// end method
-
-	public static String checkEmail() {
-		String tempEmail = checkUserInputString("Email Address: ");
-		boolean isEmailValid = false;
-		int indexOfAt = -1;
-		int indexOfDot = -1;
-		boolean consecDots = false;
-		for (int indexAt = 0; indexAt < tempEmail.length(); indexAt++) {
-			if (tempEmail.charAt(indexAt) == '@') { // checks if there's @
-				indexOfAt = indexAt; // store the index
-				break; // if found stop the looping
-			}
-
-		} // end for
-
-		// find the index '.'
-		for (int indexDot = 0; indexDot < tempEmail.length(); indexDot++) {
-			if (tempEmail.charAt(indexDot) == '.') {
-				indexOfDot = indexDot;
-				break;
-			} // end if
-		} // end for
-
-		if (!tempEmail.isEmpty() && tempEmail != null && indexOfDot > indexOfAt && indexOfAt > 0
-				&& indexOfDot < tempEmail.length() - 1) {
-			for (int indexConsec = indexOfAt + 1; indexConsec < tempEmail.length() - 1; indexConsec++) {
-				if (tempEmail.charAt(indexConsec) == '.' && tempEmail.charAt(indexConsec - 1) == '.') {
-					consecDots = true;
-					break;
-				} // end if
-			} // end for
-
-			if (!consecDots) { // if there's no another dot
-				isEmailValid = true; // it's a valid email
-			} // end if
-		} // end if
-
-		if (tempEmail == null) {
-			System.out.println("[Incomplete Entry]");
-			System.out.print("Email Address: ");
-			checkEmail();
-		} else if (!isEmailValid) {
-			System.out.println("[This Email is Invalid.]");
-			System.out.print("Email Address: ");
-			checkEmail();
-		} // end if else
-
-		return tempEmail;
 	}// end method
 
 	/*
