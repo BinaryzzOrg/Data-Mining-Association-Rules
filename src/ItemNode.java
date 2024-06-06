@@ -22,4 +22,8 @@ public class ItemNode {
 		this.nextPointer = nextPointer;
 	}
 
+	public String toString() {
+		return itemName;
+	}// end method
+
 }// end class
