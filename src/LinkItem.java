@@ -64,7 +64,8 @@ public class LinkItem {
 		System.out.println("\n+===========[Item List]===========+");
 		int numberFormat = 1;
 		for (ItemNode byItem = this.getHeadNode(); byItem != null; byItem = byItem.getNextPointer()) {
-			System.out.print(numberFormat + ") " + byItem.getItemName() + (byItem.getNextPointer() != null ? "," : ""));
+			System.out.print(
+					"| " + numberFormat + ") " + byItem.getItemName() + (byItem.getNextPointer() != null ? "," : ""));
 			System.out.println();
 			numberFormat++;
 		}
