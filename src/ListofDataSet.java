@@ -70,17 +70,17 @@ public class ListofDataSet {
 
 	// print ung datasets
 	public void display() {
-		System.out.println("+=========[Data Set Lists]========+\n");
+		System.out.println("\n+=========[Data Set Lists]========+");
 		int numberFormat = 1;
 		for (DataSetNode start = this.headPointer; start != null; start = start.getNextPointer()) {
-			System.out.print(numberFormat + ": (");
+			System.out.print(numberFormat + ": [");
 			for (ItemNode byItem = start.getHeadPointer(); byItem != null; byItem = byItem.getNextPointer()) {
 				System.out.print(byItem.getItemName() + (byItem.getNextPointer() != null ? "," : ""));
 			}
 			System.out.println("]");
 			numberFormat++;
 		}
-		System.out.println("+=================================+\n");
+		System.out.print("+=================================+");
 
 	}
 
@@ -112,7 +112,7 @@ public class ListofDataSet {
 							 + " = " + numberOfOccurence + " / " + countLength + " = " + String.format("%.4f", computedValue)
 							 + "\n>Support { " + item + " }" 
 							 + " = " + String.format("%.2f", computedValuePercent) + "% " 
-							 + "\n+=============================+\n");
+							 + "\n+=============================+");
 			return computedValue;
 			//@formatter:on
 	}
@@ -156,7 +156,7 @@ public class ListofDataSet {
 							 + " = " + numberOfOccurence + " / " + countLength + " = "  + String.format("%.4f", computedValue)
 							 + "\n>Support { " + itemOne + ", " + itemTwo + " }" 
 							 + " = " + String.format("%.2f", computedValuePercent) + "% " 
-							 + "\n+=============================+\n");
+							 + "\n+=============================+");
 			return computedValue;
 			//@formatter:on
 	}

@@ -47,93 +47,104 @@ public class Main {
 	 */
 
 	public static void Menu() {
-		// @formatter:off
-		String isListEmptyError = "\n[Item List is currently empty, Please add items first]";
+		String isListEmptyError = "\n[Item List is Currently Empty, Please Add Items First.]";
+		String isDataSetEmptyError = "\n[Data Set is Currenty Empty, Please Create a Data Set First.]";
 		int ItemLimit = 10;
-		
+
 		System.out.print(printMenuChoices());
 		switch (checkUserInputInteger(printMenuChoices())) {
 		case 1: {// Item List
 			if (!isEmptyItemList) {
 				System.out.println("Item List has already been created.");
-			}//end if
-			
+			} // end if
+
 			// enter only input not working yet
-			System.out.println("Enter 10 item names (Or Press Enter To Go Back)");
+
+			System.out.println("\nEnter 10 item names (Enter -1 to go back)");
 			for (int i = 1; i < ItemLimit + 1; i++) {
-				System.out.print(i+ ") ");				
-				String validateInput = checkUserInputString("Enter 10 item names (Or Press Enter To Go Back)");
-				if (validateInput.isEmpty()) {
-					System.out.println("d nagana for somereason, pinasok kolang sa checkUserInput eh");
+				System.out.print(i + ") ");
+				String validateInput = checkUserInputString("Enter 10 item names (Enter -1 to go back)");
+				if (validateInput.equals("-1"))
 					break;
-				}//end if
-				
+
+				isEmptyItemList = false;
 				items.addToList(validateInput);
-			}//end for
-			isEmptyItemList = false;
+			} // end for
 			break;
 		}
 		case 2: {//
+
 			if (isEmptyItemList) {
 				System.out.print(isListEmptyError);
 				break;
-			}//end if
-			
+			} // end if
+
 			DataSetNode datasets = new DataSetNode();
-			
-			//may if contains kasi di ko prinint ung list ng items so need malaman if kagaya sa list before mapunta sa datasets
-			System.out.println("Enter items to dataset (Or Press Enter To Go Back");
+
+			items.display();
+			// may if contains kasi di ko prinint ung list ng items so need malaman if
+			// kagaya sa list before mapunta sa datasets
+
+			// @formatter:off
+			String itemNumberPrompt = """
+					\n
+					+======================================================================+
+					| Select the number that corresponds to the item (Enter -1 to go back) |
+					+======================================================================+
+				    """;
+
+			System.out.print(itemNumberPrompt);
 			for (int i = 0; true; i++) {
-				System.out.print(i+ ") ");
-				String validateInput = checkUserInputString("Select items on ItemList to enter ");
-				if(validateInput.isEmpty()) break;
-				if (items.ifContains(validateInput)) {
-					datasets.addItemToDataSet(validateInput);
-				}else {
-					System.out.print("[That item is not available in the Item List]");
-					i--;
-				}//end if else
-			}//end for
+				System.out.print((i + 1) + ") ");
+				int itemPosition = checkUserInputInteger(itemNumberPrompt);
+				if (itemPosition == -1)break;
+
+				isEmptyDataSetList = false;
+				String temp = items.getItem(itemPosition);
+				datasets.addItemToDataSet(temp);
+			} // end for
+			System.out.println("+======================================================================+");
 			data.addDataSet(datasets);
-			isEmptyDataSetList = false;
 			break;
+			
+			// @formatter:on
 		}
 		case 3: {// delete data set
-				if (isEmptyItemList || isEmptyDataSetList) {
-					System.out.println((isEmptyDataSetList && !isEmptyItemList) ? "\n[Please Create a Data Set List First.]"
-							: "\n[Please Create an Item List First.]");
-					break;
-				}//end if
-				
-				System.out.print("Enter the position of the data set you want to delete: (1-?) need position shit here\nposition>");
-				int position = checkUserInputInteger("Position>");
-				data.deleteDataSet(position);
+			//@formatter:off
+			if (isEmptyItemList || isEmptyDataSetList) {
+				System.out.print((isEmptyDataSetList && !isEmptyItemList) ? "\n" + isDataSetEmptyError : "\n" + isListEmptyError);
+				break;
+			} // end if
+
+			data.display();
+			System.out.print("Enter the position of the data set you want to delete. \nposition> ");
+			int position = checkUserInputInteger("Position> ");
+			data.deleteDataSet(position);
 			break;
 		}
 		case 4: {// display data set
-			if (isEmptyItemList) {
-				System.out.print(isListEmptyError);
+			if (isEmptyItemList || isEmptyDataSetList) {
+				System.out.print((isEmptyDataSetList && !isEmptyItemList) ? "\n" + isDataSetEmptyError : "\n" + isListEmptyError);
 				break;
-			}//end if
-				data.display();
+			} // end if
+			data.display();
 			break;
 		}
 		case 5: {// display support value
-				if (isEmptyItemList || isEmptyDataSetList) {
-					System.out.println((isEmptyDataSetList && !isEmptyItemList) ? "\n[Please Create a Data Set List First.]"
-							: "\n[Please Create an Item List First.]");
-					break;
-				}//end if
-				
-				supportValueMenu();
+			if (isEmptyItemList || isEmptyDataSetList) {
+				System.out.print((isEmptyDataSetList && !isEmptyItemList) ? "\n" + isDataSetEmptyError : "\n" + isListEmptyError);
 				break;
+			} // end if
+
+			supportValueMenu();
+			break;
 		}
 		case 6: {// determine association
 			if (isEmptyItemList || isEmptyDataSetList) {
-				System.out.println((isEmptyDataSetList && !isEmptyItemList) ? "\n[Please Create a Data Set List First.]"
-						: "\n[Please Create an Item List First.]");
+				System.out.print((isEmptyDataSetList && !isEmptyItemList) ? "\n" + isDataSetEmptyError : "\n" + isListEmptyError);
 				break;
 			} // end if
+			
 			System.out.print("Enter item B: ");
 			String Asso_B = checkUserInputString("Enter item B: ");
 			System.out.print("Enter item A: ");
@@ -150,13 +161,13 @@ public class Main {
 			// @formatter:off
 			System.out.println("""
 					\n
-					⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃ 
-					┇ Error:                                    ┇
-					┇ Input is not a valid Menu choice.         ┇
-					⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
-					┇ Msg:                                      ┇
-					┇ Please enter only 1 to 7 as input         ┇
-					⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
+				    +============================================+
+				    | Error :                                    |
+				    | Input is not a valid Menu Choice.          |
+				    +============================================+
+				    | Msg:                                       |
+				    | Please enter only 1 to 7 as input          |
+				    +============================================+
 					""");
 			// @formatter:on
 			break;
@@ -199,13 +210,13 @@ public class Main {
 			// @formatter:off
 			System.out.println("""
 					\n
-					⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
-					┇ Error:                                   ┇
-					┇ Input is not a valid Menu choice.        ┇
-					⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
-					┇ Msg:                                     ┇
-					┇ Please enter only 1 to 7 as input        ┇
-					⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃
+				    +============================================+
+				    | Error :                                    |
+				    | Input is not a valid Menu Choice.          |
+				    +============================================+
+				    | Msg:                                       |
+				    | Please enter only 1 to 7 as input          |
+				    +============================================+
 					""");
 			// @formatter:on
 		}// end switch
@@ -218,6 +229,7 @@ public class Main {
 	 * and the user is prompted to enter an integer value. The 'prompt' parameter is
 	 * used for different scenarios of printing.
 	 */
+
 	// TLDR - METHOD FOR DEALING WITH INTEGER INPUT
 	static Scanner sc;
 
@@ -243,9 +255,13 @@ public class Main {
 	public static String checkUserInputString(String prompt) {
 		sc = new Scanner(System.in);
 
+		if (sc.hasNextInt() && sc.nextInt() == -1) {
+			return "-1";
+		}
 		if (!sc.hasNextInt()) {
 			String input = sc.nextLine();
-			return removeWhiteSpace(input);
+//			return removeWhiteSpace(input);
+			return input;
 		} // end if
 
 		System.out.println(printCustomError("string"));
@@ -285,7 +301,7 @@ public class Main {
 							"┇ Warning: Input is not a "+ type +" value.    ┇\n" +
 							"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃\n" +
 							"┇ Notice: Please only enter a "+ type +" value.┇\n" +
-							"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃\n";
+							"⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃⁃";
 				// @formatter:on
 	}// end method
 
