@@ -81,10 +81,36 @@ public class ListofDataSet {
 			numberFormat++;
 		}
 		System.out.print("+=================================+");
-
 	}
 
-	public double displaySupportOneValue(String item) {
+	public void displaySupportValue() {
+		LinkItem itemsAvailable = Main.getItems();
+		LinkItem items = new LinkItem();
+		
+		itemsAvailable.display();
+		String itemNumberPrompt = """
+				+=========================================================================+
+				| --  Select the number that corresponds to the item in the item list  -- |
+				|     --  Once done, Press -1 to create the data set and go back  --      |
+				+=========================================================================+
+			    """;
+
+		System.out.print(itemNumberPrompt);
+		for (int i = 0; true; i++) {
+			System.out.print("| "+ (i + 1) + ") ");
+			int itemPosition = Main.checkUserInputInteger(itemNumberPrompt);
+			if (itemPosition == -1) break;
+
+			String temp = itemsAvailable.getItem(itemPosition);
+			System.out.println(temp);
+			items.addToList(temp);
+		} // end for
+		
+		displaySupportValueHelper(items);
+	}
+	
+	public void displaySupportValueHelper(LinkItem items) {
+		
 		double computedValue = 0;
 		double numberOfOccurence = 0;
 		double computedValuePercent = 0;
@@ -92,11 +118,24 @@ public class ListofDataSet {
 		DataSetNode currentDataSetNode = getHeadPointer();
 		ItemNode byItem = currentDataSetNode.getHeadPointer();
 
+		ItemNode currentItem = items.getHeadNode();
+		int existingCounter = 0;
+		
 		while (currentDataSetNode != null) {
 			byItem = currentDataSetNode.getHeadPointer();
 
-			if (ifContains(item, byItem))
-				numberOfOccurence += 1;
+			while(currentItem != null) {
+				if (!ifContains(currentItem.getItemName(), byItem))
+					break;
+				existingCounter++;
+				currentItem = currentItem.getNextPointer();
+			}
+			
+			if(existingCounter == items.getLength())
+				numberOfOccurence++;
+
+			existingCounter = 0;
+			currentItem = items.getHeadNode();
 			byItem = byItem.getNextPointer();
 
 			currentDataSetNode = currentDataSetNode.getNextPointer();
@@ -105,60 +144,23 @@ public class ListofDataSet {
 		computedValue = numberOfOccurence / countLength;
 		computedValuePercent = computedValue * 100;
 		//@formatter:off
-			System.out.print("\n+========[SUPPORT VALUE]=======+\n"
-							 + "Total # of Occurence: " + numberOfOccurence
-							 + "\nTotal # of Data Set: " + countLength
-							 + "\n\n>Support { " + item + " }" 
-							 + " = " + numberOfOccurence + " / " + countLength + " = " + String.format("%.4f", computedValue)
-							 + "\n>Support { " + item + " }" 
-							 + " = " + String.format("%.2f", computedValuePercent) + "% " 
-							 + "\n+=============================+");
-			return computedValue;
-			//@formatter:on
-	}
-
-	public double displaySupportValue(String itemOne, String itemTwo) {
-		double computedValue = 0;
-		double numberOfOccurence = 0;
-		double computedValuePercent = 0;
-		DataSetNode currentDataSetNode = getHeadPointer();
-		ItemNode byItem = currentDataSetNode.getHeadPointer();
-
-		while (currentDataSetNode != null) {
-			byItem = currentDataSetNode.getHeadPointer();
-			boolean firstItemPresent = false;
-			boolean secondItemPresent = false;
-
-			if (ifContains(itemOne, byItem))
-				firstItemPresent = true;
-
-			if (ifContains(itemTwo, byItem))
-				secondItemPresent = true;
-
-			if (firstItemPresent && secondItemPresent) {
-				numberOfOccurence += 1;
-				break;
-			} else {
-				firstItemPresent = false;
-				secondItemPresent = false;
-			}
-
-			currentDataSetNode = currentDataSetNode.getNextPointer();
+		System.out.print("\n+========[SUPPORT VALUE]=======+\n"
+						 + "Total # of Occurence: " + numberOfOccurence
+						 + "\nTotal # of Data Set: " + countLength
+						 + "\n\n>Support { ");
+		
+		String supportItem = "";
+		while(currentItem != null) {
+			supportItem += (currentItem.getNextPointer() != null) ? currentItem.getItemName() + ", " : currentItem.getItemName() + " }";
+			currentItem = currentItem.getNextPointer();
 		}
-
-		computedValue = numberOfOccurence / countLength;
-		computedValuePercent = computedValue * 100;
-		//@formatter:off
-			System.out.print("\n+========[SUPPORT VALUE]=======+\n"
-							 + "Total # of Occurence of { " + itemOne + ", " + itemTwo +" }: " + numberOfOccurence
-							 + "\nTotal # of Data Set: " + countLength
-							 + "\n\n>Support { " + itemOne + ", " + itemTwo + " }" 
-							 + " = " + numberOfOccurence + " / " + countLength + " = "  + String.format("%.4f", computedValue)
-							 + "\n>Support { " + itemOne + ", " + itemTwo + " }" 
-							 + " = " + String.format("%.2f", computedValuePercent) + "% " 
-							 + "\n+=============================+");
-			return computedValue;
-			//@formatter:on
+		
+		
+		System.out.println(supportItem
+					   + " = " + numberOfOccurence + " / " + countLength + " = " + computedValue
+					   + "\n>Support { " + supportItem + " = " + computedValuePercent 
+					   + "\n+==============================+\n");
+		//@formatter:on
 	}
 
 	public void determineAssociation(String itemOne, String itemTwo) {
@@ -244,16 +246,16 @@ public class ListofDataSet {
 							 + "\n>Lift { " + itemTwo + "-> " + itemOne + " }" 
 							 + " = " + String.format("%.2f", computedLiftValue));
 			if(computedLiftValue > 1) {
-				System.out.println("+=================================+\n"
+				System.out.println("\n+=================================+\n"
 								 + "There is an association {" + itemTwo + " -> " + itemOne + "}"
 								 + "\n+=================================+\n");
 			} else if (computedLiftValue == 1) {
-           	   System.out.println("+=================================+\n"
+           	   System.out.println("\n+=================================+\n"
 								 + "There is no association! \nLift Value: " + String.format("%.2f", computedLiftValue) + " = 1\n" 
 								 + "+=================================+\n");
 			
             } else {
-				System.out.println("+=================================+\n"
+				System.out.println("\n+=================================+\n"
 								 + "There is no association! \nLift Value: " + String.format("%.2f", computedLiftValue) + " < 1\n" 
 								 + "+=================================+");
 			}
