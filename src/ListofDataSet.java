@@ -158,7 +158,7 @@ public class ListofDataSet {
 		
 		System.out.println(supportItem
 					   + " = " + numberOfOccurence + " / " + countLength + " = " + computedValue
-					   + "\n>Support { " + supportItem + " = " + computedValuePercent 
+					   + "\n>Support { " + supportItem + " = " + computedValuePercent + "%"
 					   + "\n+==============================+\n");
 		//@formatter:on
 	}
