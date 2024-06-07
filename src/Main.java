@@ -73,7 +73,7 @@ public class Main {
 			System.out.print(itemItemNamePrompt);
 			for (int i = 1; i < ItemLimit + 1; i++) {
 				System.out.print("| " + i + ") ");
-				String validateInput = checkUserInputString(itemItemNamePrompt);
+				String validateInput = checkUserInputString(itemItemNamePrompt + "| " + i + ") ");
 				if (validateInput.equals("-1"))
 					break;
 
@@ -100,14 +100,43 @@ public class Main {
 				    """;
 
 			System.out.print(itemNumberPrompt);
+			
 			for (int i = 0; true; i++) {
+				ItemNode dataSetListHead = datasets.getHeadPointer();
 				System.out.print("| "+ (i + 1) + ") ");
-				int itemPosition = checkUserInputInteger(itemNumberPrompt);
-				if (itemPosition == -1)break;
+				int itemPosition = checkUserInputInteger(itemNumberPrompt + "| "+ (i + 1) + ") ");
+				if (itemPosition == -1) {
+					if (dataSetListHead == null) {
+						System.out.println("Please enter at least one item.");
+						i--;
+						continue;
+					}
+					break;
+				}
 
-				isEmptyDataSetList = false;
 				String temp = items.getItem(itemPosition);
+				if (temp == null) {
+					System.out.println("Input is not a valid Item Choice.");
+					i--;
+					continue;
+				}
+				boolean inDataSet = false;
+				if (dataSetListHead != null) {
+					while (dataSetListHead != null) {
+						if (dataSetListHead.getItemName() == temp) {
+							inDataSet = true;
+							break;
+						}
+						dataSetListHead = dataSetListHead.getNextPointer();
+					}
+				}
+				if (inDataSet) {
+					System.out.println("Item choice is already in the data set.");
+					i--;
+					continue;
+				}
 				datasets.addItemToDataSet(temp);
+				isEmptyDataSetList = false;
 			} // end for
 			System.out.print("+======================================================================+");
 			data.addDataSet(datasets);
@@ -201,7 +230,7 @@ public class Main {
 		System.out.println(printCustomError("integer"));
 		System.out.print(prompt);
 		return checkUserInputInteger(prompt);
-	}// end if
+	}// end method
 
 	/*
 	 * The CheckUserInput is an overload of CheckUserMenu method, This method scans
@@ -215,20 +244,20 @@ public class Main {
 	private static String checkUserInputString(String prompt) {
 		sc = new Scanner(System.in);
 
-		if (sc.hasNextInt() && sc.nextInt() == -1) {
-			return "-1";
-		}
 		if (!sc.hasNextInt()) {
 			String input = sc.nextLine();
-//			return removeWhiteSpace(input);
 			return input;
-		} // end if
+		} else {
+			if (sc.nextInt() == -1) {
+				return "-1";
+			} else {
+				System.out.println(printCustomError("string"));
 
-		System.out.println(printCustomError("string"));
-
-		System.out.print(prompt);
-		return checkUserInputString(prompt);
-	}// end if
+				System.out.print(prompt);
+				return checkUserInputString(prompt);
+			}//end if else 
+		}//end if else
+	}// end method
 
 	/*
 	 * The printCustomError is exclusively used by checkUserInput, and
