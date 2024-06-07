@@ -1,5 +1,6 @@
 public class LinkItem {
 	private ItemNode headNode, tailPointer;
+	private int length = 0;
 
 	public LinkItem() {
 		this.headNode = tailPointer = null;
@@ -35,6 +36,10 @@ public class LinkItem {
 		this.tailPointer = tailPointer;
 	}
 
+	public int getLength() {
+		return this.length;
+	}
+	
 	public boolean ifContains(String name) {
 		for (ItemNode start = this.headNode; start != null; start = start.getNextPointer()) {
 			if (start.getItemName().equals(name))
@@ -51,9 +56,11 @@ public class LinkItem {
 		if (!emptyList()) {
 			tailPointer.setNextPointer(insertNode);
 			setTailPointer(tailPointer.getNextPointer());
+			length++;
 			return;
 		}
 
+		length++;
 		setHeadNode(insertNode);
 		setTailPointer(insertNode);
 		return;
