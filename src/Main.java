@@ -1,4 +1,3 @@
-
 import java.util.Scanner;
 
 public class Main {
@@ -13,6 +12,11 @@ public class Main {
 	public static void main(String[] args) {
 		Menu();
 	}// end class
+	
+	//getting the items
+	public static LinkItem getItems() {
+		return items;
+	}
 
 	/*
 	 * The PrintMenuChoices method returns a formatted string for MainMenu. This
@@ -137,8 +141,7 @@ public class Main {
 				System.out.print((isEmptyDataSetList && !isEmptyItemList) ? "\n" + isDataSetEmptyError : "\n" + isListEmptyError);
 				break;
 			} // end if
-
-			supportValueMenu();
+			data.displaySupportValue();
 			break;
 		}
 		case 6: {// determine association
@@ -178,62 +181,17 @@ public class Main {
 		Menu();
 		// @formatter:on
 	}// end method
-
-	public static void supportValueMenu() {
-		String supportValueMenu = """
-				\n
-				+==============================+
-				|   --  Choose on Option  --   |
-				+==============================+
-				| (1) : Support {A}            |
-				| (2) : Support {B,A}          |
-				| (3) : Go Back                |
-				+==============================+
-				Select an option>\s""";
-		System.out.print(supportValueMenu);
-
-		int choice = checkUserInputInteger(supportValueMenu);
-		switch (choice) {
-		case 1: {
-			System.out.print("Enter item A: ");
-			String A = checkUserInputString("Enter item A: ");
-			data.displaySupportOneValue(A);
-			break;
-		}
-		case 2: {
-			System.out.print("Enter item B: ");
-			String B = checkUserInputString("Enter item B: ");
-			System.out.print("Enter item A: ");
-			String A = checkUserInputString("Enter item A: ");
-			data.displaySupportValue(B, A);
-			break;
-		}
-		default:
-			// @formatter:off
-			System.out.println("""
-					\n
-				    +============================================+
-				    | Error :                                    |
-				    | Input is not a valid Menu Choice.          |
-				    +============================================+
-				    | Msg:                                       |
-				    | Please enter only 1 to 7 as input          |
-				    +============================================+
-					""");
-			// @formatter:on
-		}// end switch
-	}// end method
-
+	
 	/*
 	 * The CheckUserInputMenu method scans the user's input and checks if it is an
 	 * integer. If the input is an integer, it is stored in the 'value' variable and
 	 * returns it. If the input is not an integer, an error message is displayed,
 	 * and the user is prompted to enter an integer value. The 'prompt' parameter is
-	 * used for different scenarios of printing.
+	 * used for different scenarios of printing.s
 	 */
 
 	// TLDR - METHOD FOR DEALING WITH INTEGER INPUT
-	static Scanner sc;
+	private static Scanner sc;
 
 	public static int checkUserInputInteger(String prompt) {
 		sc = new Scanner(System.in);
@@ -254,7 +212,7 @@ public class Main {
 	 * printing
 	 */
 	// TLDR - METHOD FOR DEALING WITH STRING INPUT
-	public static String checkUserInputString(String prompt) {
+	private static String checkUserInputString(String prompt) {
 		sc = new Scanner(System.in);
 
 		if (sc.hasNextInt() && sc.nextInt() == -1) {
@@ -273,30 +231,12 @@ public class Main {
 	}// end if
 
 	/*
-	 * The removeWhiteSpace method, simply removes any extra white spaces on a
-	 * string that is passed on to the parameter. Once the method is done with the
-	 * operations, it returns a more 'clean' string for the other methods to use.
-	 */
-	public static String removeWhiteSpace(String str) {
-		String fixed = "";
-		for (int i = 0; i < str.length(); i++) {
-			if (str.charAt(i) == ' ' && str.charAt(i + 1) != ' ') {
-				fixed += str.charAt(i);
-			} // end if
-			if (str.charAt(i) != ' ') {
-				fixed += str.charAt(i);
-			} // end if
-		} // end for
-		return fixed;
-	}// end method
-
-	/*
 	 * The printCustomError is exclusively used by checkUserInput, and
 	 * checkUserInputMenu for printing their errors, but this method can by used by
 	 * other methods if needed. This method has a parameter called 'type' for
 	 * specify what data is needed be inputed on a method that calls this.
 	 */
-	public static String printCustomError(String type) {
+	private static String printCustomError(String type) {
 		// @formatter:off
 		return "\n" 
 				+ "+================================================+\n" 
