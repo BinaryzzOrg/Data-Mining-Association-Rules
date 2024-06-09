@@ -173,16 +173,20 @@ public class Main {
 			data.displaySupportValue();
 			break;
 		}
-		case 6: {// determine association
+		case 6: { // determine association
 			if (isEmptyItemList || isEmptyDataSetList) {
 				System.out.print((isEmptyDataSetList && !isEmptyItemList) ? "\n" + isDataSetEmptyError : "\n" + isListEmptyError);
 				break;
 			} // end if
 			
-			System.out.print("Enter item B: ");
-			String Asso_B = checkUserInputString("Enter item B: ");
-			System.out.print("Enter item A: ");
-			String Asso_A = checkUserInputString("Enter item A: ");
+			items.display();
+			
+			System.out.print("Enter item B no#: ");
+			int itemB = checkUserInputInteger("Position> ");
+			String Asso_B = items.getItem(itemB);
+			System.out.print("Enter item A no#: ");
+			int itemA = checkUserInputInteger("Position> ");
+			String Asso_A = items.getItem(itemA);
 			data.determineAssociation(Asso_B, Asso_A);
 			break;
 		}
