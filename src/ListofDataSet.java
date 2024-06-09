@@ -183,14 +183,12 @@ public class ListofDataSet {
 			if (ifContains(itemTwo, byItem))
 				secondItemPresent = true;
 
-			if (firstItemPresent && secondItemPresent) {
+			if (firstItemPresent && secondItemPresent) 
 				numberOfBothOccurence += 1;
-				break;
-			} else {
-				firstItemPresent = false;
-				secondItemPresent = false;
-			}
-
+			
+			firstItemPresent = false;
+			secondItemPresent = false;
+			
 			currentDataSetNode = currentDataSetNode.getNextPointer();
 		}
 
@@ -198,7 +196,7 @@ public class ListofDataSet {
 		currentDataSetNode = getHeadPointer();
 		while (currentDataSetNode != null) {
 			byItem = currentDataSetNode.getHeadPointer();
-			if (ifContains(itemTwo, byItem))
+			if (ifContains(itemOne, byItem))
 				numberOfOccurenceOfB += 1;
 			currentDataSetNode = currentDataSetNode.getNextPointer();
 		}
@@ -265,7 +263,7 @@ public class ListofDataSet {
 
 	public boolean ifContains(String name, ItemNode headNode) {
 		for (ItemNode start = headNode; start != null; start = start.getNextPointer()) {
-			if (start.getItemName().equalsIgnoreCase(name))
+			if (start.getItemName().equalsIgnoreCase(name)) 
 				return true;
 		}
 		return false;
