@@ -228,6 +228,8 @@ public class ListofDataSet {
 							 + " = " + numberOfBothOccurence + " / " + numberOfOccurenceOfB 
 							 + "\n>Condifence { " + itemTwo + "-> " + itemOne + " }" 
 							 + " = " + String.format("%.2f", computedConfidenceValue)
+							 + "\n>Condifence { " + itemTwo + "-> " + itemOne + " }" 
+							 + " = " + String.format("%.2f", (computedConfidenceValue * 100)) + "%"
 							 + "\n"
 							 + "\n+===========[LIFT VALUE]===========+\n"
 							 + "Total # of Occurence of { " + itemOne + "," + itemTwo +" }: " + numberOfBothOccurence
