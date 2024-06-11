@@ -42,6 +42,21 @@ public class ListofDataSet {
 		return;
 	}
 
+	/*
+	 * This method return is used for deleting a data set specified by the user. It has a parameter of integer position
+	 * where user specified for deletion. 
+	 * 
+	 * If the position is invalid it will notify the user that the input is invalid.
+	 * 
+	 * If the position is invalid it will show an error message. If the position to delete is on 
+	 * the first node, the second node will be the new head. If the position to delete is on the last node, it will traverse through
+	 * the list and the second to the last of the list will point its next node to null. If the position to delete is neither the 
+	 * first and last node, we traverse the list and find the preceded node and make the next pointer to the next next node. 
+	 * 
+	 * if the data set list is zero make the the isEmptyDataSetList to true 
+	 * 
+	 * after executing make a notification that the deletion is successful;
+	 */
 	public void deleteDataSet(int position) {
 		int counter = 1;
 		if (position < 1 || position > countLength) {
