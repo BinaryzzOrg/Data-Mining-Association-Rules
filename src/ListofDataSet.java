@@ -22,6 +22,12 @@ public class ListofDataSet {
 		this.tailPointer = tailPointer;
 	}
 
+	/*
+ 	 * addDataSet adds a data set that has been created using
+   	 * the item list from the Menu. If the dataSet list is
+         * not empty then it will add the new data set at the tail
+	 * if it is not empty it will set it as the head and tail.
+	 */
 	public void addDataSet(DataSetNode dataSet) {
 		if (!(this.headPointer == null)) {
 			countLength++;
@@ -68,7 +74,12 @@ public class ListofDataSet {
 
 	}
 
-	// print ung datasets
+	/*
+ 	 * display prints the data sets by travsering the data
+         * set list then getting the pointer to the head of the
+	 * item list stored within that data set node to print
+   	 * all of the stored item in that data set.
+	 */
 	public void display() {
 		System.out.println("\n+=========[Data Set Lists]========+");
 		int numberFormat = 1;
@@ -83,6 +94,15 @@ public class ListofDataSet {
 		System.out.print("+=================================+");
 	}
 
+	/*
+ 	 * In order to display the support value, it first displays
+   	 * the item list to view all the items available then
+     	 * stores all of the selected to a LinkItem node to keep
+       	 * track of all the items that has been selected by the user
+	 * Items stored in the LinkItem list are items that will be
+  	 * considered as items that appear on a same data set and get
+         * its support value using the helper method named displaySupportValueHelper()
+	 */
 	public void displaySupportValue() {
 		LinkItem itemsAvailable = Main.getItems();
 		LinkItem items = new LinkItem();
@@ -108,7 +128,27 @@ public class ListofDataSet {
 		
 		displaySupportValueHelper(items);
 	}
-	
+
+	/*
+ 	 * displaySupportValueHelper is for printing the support value
+         * computed of the given items. Using a nested while loop,
+	 * in the outer while loop it is used to traverse the DataSet
+         * list and gets the items within it and storing it in the
+	 * ItemNode list, afterwards using the inner while loop
+  	 * it checks if the items in the given parameter contains
+    	 * all of the items stored within it using ifContains. If
+      	 * ifContains returns a false value it will break the inner
+	 * while loop and move to the next one. Else if it finds a
+  	 * true value meaning that the item exist it will increase
+    	 * the existingCounter until it reaches the length of the
+      	 * items list, if it reaches the length it means that all of
+	 * the items within that item list exist in that data set and
+  	 * it will increase the numberOfOccurence of those items.
+    	 * then finally in the computedValue it divides the numberOfOccurence
+      	 * to countLength to identify its support value. The display shows
+	 * a percentage value and a decimal value along with its breakdown
+  	 * of computation
+	 */
 	public void displaySupportValueHelper(LinkItem items) {
 		
 		double computedValue = 0;
@@ -163,6 +203,19 @@ public class ListofDataSet {
 		//@formatter:on
 	}
 
+	/*
+ 	 * determineAssociation is for getting the confidence and lift
+   	 * value of the two given items. The first while loop if for checking
+     	 * if itemOne and itemTwo exist within the list of Items in the currentDataSet.
+       	 * If both of these items exist in the currentDataSet it will add 1 to
+	 * numberOfBothOccurence, then the following two while loops if for checking
+  	 * the occurence of each item in the data set list. It has the same logic
+    	 * as the first while loop where it searchers for its occurence in the
+      	 * ItemNode of the currentDataSet then adds one to its number of occurence
+	 * if found. Finally using the formulas for confidence and life value
+  	 * it prints the breakdown computation of the confidence and life along
+    	 * with its computed value before printing it.
+ 	 */
 	public void determineAssociation(String itemOne, String itemTwo) {
 
 		double numberOfBothOccurence = 0;
@@ -263,6 +316,13 @@ public class ListofDataSet {
 			//@formatter:on
 	}// end method
 
+	/*
+ 	 * ifContains is used for checking if a specific
+   	 * items exists within the ItemNode list of items.
+     	 * If it exists return true. If the for loop ends
+       	 * without finding it return false meaning it does not
+	 * exist.
+	 */
 	public boolean ifContains(String name, ItemNode headNode) {
 		for (ItemNode start = headNode; start != null; start = start.getNextPointer()) {
 			if (start.getItemName().equalsIgnoreCase(name)) 
