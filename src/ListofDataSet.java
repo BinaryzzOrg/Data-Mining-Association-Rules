@@ -137,7 +137,6 @@ public class ListofDataSet {
 			if (itemPosition == -1) break;
 
 			String temp = itemsAvailable.getItem(itemPosition);
-			System.out.println(temp);
 			items.addToList(temp);
 		} // end for
 		
