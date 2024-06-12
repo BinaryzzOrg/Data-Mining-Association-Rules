@@ -22,6 +22,12 @@ public class ListofDataSet {
 		this.tailPointer = tailPointer;
 	}
 
+	/*
+ 	 * addDataSet adds a data set that has been created using
+   	 * the item list from the Menu. If the dataSet list is
+         * not empty then it will add the new data set at the tail
+	 * if it is not empty it will set it as the head and tail.
+	 */
 	public void addDataSet(DataSetNode dataSet) {
 		if (!(this.headPointer == null)) {
 			countLength++;
@@ -103,6 +109,15 @@ public class ListofDataSet {
 		System.out.print("+=================================+");
 	}// end of method
 
+	/*
+ 	 * In order to display the support value, it first displays
+   	 * the item list to view all the items available then
+     	 * stores all of the selected to a LinkItem node to keep
+       	 * track of all the items that has been selected by the user
+	 * Items stored in the LinkItem list are items that will be
+  	 * considered as items that appear on a same data set and get
+         * its support value using the helper method named displaySupportValueHelper()
+	 */
 	public void displaySupportValue() {
 		LinkItem itemsAvailable = Main.getItems();
 		LinkItem items = new LinkItem();
@@ -194,6 +209,19 @@ public class ListofDataSet {
 		//@formatter:on
 	}// end of method
 
+	/*
+ 	 * determineAssociation is for getting the confidence and lift
+   	 * value of the two given items. The first while loop if for checking
+     	 * if itemOne and itemTwo exist within the list of Items in the currentDataSet.
+       	 * If both of these items exist in the currentDataSet it will add 1 to
+	 * numberOfBothOccurence, then the following two while loops if for checking
+  	 * the occurence of each item in the data set list. It has the same logic
+    	 * as the first while loop where it searchers for its occurence in the
+      	 * ItemNode of the currentDataSet then adds one to its number of occurence
+	 * if found. Finally using the formulas for confidence and life value
+  	 * it prints the breakdown computation of the confidence and life along
+    	 * with its computed value before printing it.
+ 	 */
 	public void determineAssociation(String itemOne, String itemTwo) {
 
 		double numberOfBothOccurence = 0;
