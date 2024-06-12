@@ -12,8 +12,8 @@ public class Main {
 	public static void main(String[] args) {
 		Menu();
 	}// end class
-	
-	//getting the items
+
+	// getting the items
 	public static LinkItem getItems() {
 		return items;
 	}
@@ -43,11 +43,12 @@ public class Main {
 	}// end method
 
 	/*
-	 * The MenuChoices method contains the following operations: Append, Delete,
-	 * Change Value, Display, Node History, List History,and Exit. This method calls
-	 * the PrintMenuChoices that prints out the choices for modifying the Persistent
-	 * Singly LinkedList that is chosen by the user. MenuChoices method also handles
-	 * miss inputs of the user and loops if it detects one.
+	 * The MenuChoices method contains the following operations: Create Item
+	 * List,Create Data Set Delete Data Set, Display Data Set, Display Support
+	 * Value/Association,and Exit. This method calls the PrintMenuChoices that
+	 * prints out the choices for modifying the Persistent Singly LinkedList that is
+	 * chosen by the user. MenuChoices method also handles miss inputs of the user
+	 * and loops if it detects one.
 	 */
 
 	public static void Menu() {
@@ -55,6 +56,7 @@ public class Main {
 		String isDataSetEmptyError = "\n[Data Set is Currenty Empty, Please Create a Data Set First.]";
 		int ItemLimit = 10;
 
+		// Print menu choices and get user input
 		System.out.print(printMenuChoices());
 		switch (checkUserInputInteger(printMenuChoices())) {
 		case 1: {// Item List
@@ -71,6 +73,7 @@ public class Main {
 				    """;
 			// @formatter:on
 			System.out.print(itemItemNamePrompt);
+			// Loop to get item names from user
 			for (int i = 1; i < ItemLimit + 1; i++) {
 				System.out.print("| " + i + ") ");
 				String validateInput = checkUserInputString(itemItemNamePrompt + "| " + i + ") ");
@@ -116,7 +119,7 @@ public class Main {
 
 				String temp = items.getItem(itemPosition);
 				if (temp == null) {
-					System.out.println("Input is not a valid Item Choice.");
+					System.out.print("Input is not a valid Item Choice.");
 					i--;
 					continue;
 				}
@@ -214,7 +217,7 @@ public class Main {
 		Menu();
 		// @formatter:on
 	}// end method
-	
+
 	/*
 	 * The CheckUserInputMenu method scans the user's input and checks if it is an
 	 * integer. If the input is an integer, it is stored in the 'value' variable and
@@ -259,8 +262,8 @@ public class Main {
 
 				System.out.print(prompt);
 				return checkUserInputString(prompt);
-			}//end if else 
-		}//end if else
+			} // end if else
+		} // end if else
 	}// end method
 
 	/*

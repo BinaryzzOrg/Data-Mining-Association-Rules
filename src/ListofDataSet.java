@@ -36,6 +36,21 @@ public class ListofDataSet {
 		return;
 	}
 
+	/**
+	 * This method deletes a dataset from the list at the specified position. It
+	 * first checks if the given position is valid, ensuring it is within the range
+	 * of the list. If the position is invalid, it prints "Invalid Position!" and
+	 * exits the method. If the position is the first dataset, it updates the head
+	 * pointer to skip the first dataset. If the position is the last dataset, it
+	 * iterates through the list to find the second-to-last dataset, updates its
+	 * next pointer to null, and sets it as the new tail pointer. If the position is
+	 * between the first and last datasets, it iterates through the list to find the
+	 * dataset before the specified position, then updates its next pointer to skip
+	 * the dataset at the specified position. After deleting the dataset, it
+	 * decrements the count of datasets. If the list becomes empty after deletion,
+	 * it updates a flag indicating that the list is empty. It prints "Successfully
+	 * deleted!" to indicate successful deletion.
+	 */
 	public void deleteDataSet(int position) {
 		int counter = 1;
 		if (position < 1 || position > countLength) {
@@ -66,9 +81,14 @@ public class ListofDataSet {
 			Main.isEmptyDataSetList = true;
 		System.out.println("Successfuly deleted!");
 
-	}
+	}// end of method
 
-	// print ung datasets
+	/**
+	 * This method displays the list of datasets along with their respective items.
+	 * It iterates through each dataset, printing its index and the items it
+	 * contains. Each item is separated by a comma, and datasets are separated by
+	 * new lines.
+	 */
 	public void display() {
 		System.out.println("\n+=========[Data Set Lists]========+");
 		int numberFormat = 1;
@@ -81,36 +101,45 @@ public class ListofDataSet {
 			numberFormat++;
 		}
 		System.out.print("+=================================+");
-	}
+	}// end of method
 
 	public void displaySupportValue() {
 		LinkItem itemsAvailable = Main.getItems();
 		LinkItem items = new LinkItem();
-		
+
 		itemsAvailable.display();
 		String itemNumberPrompt = """
 				+=========================================================================+
 				| --  Select the number that corresponds to the item in the item list  -- |
 				|     --  Once done, Press -1 to create the data set and go back  --      |
 				+=========================================================================+
-			    """;
+				   """;
 
 		System.out.print(itemNumberPrompt);
 		for (int i = 0; true; i++) {
-			System.out.print("| "+ (i + 1) + ") ");
+			System.out.print("| " + (i + 1) + ") ");
 			int itemPosition = Main.checkUserInputInteger(itemNumberPrompt);
-			if (itemPosition == -1) break;
+			if (itemPosition == -1)
+				break;
 
 			String temp = itemsAvailable.getItem(itemPosition);
-			System.out.println(temp);
+			System.out.print(temp);
 			items.addToList(temp);
 		} // end for
-		
+
 		displaySupportValueHelper(items);
 	}
-	
+
+	/**
+	 * This method calculates the support value and percentage for a given set of
+	 * items in the LinkItem. It iterates through each dataset and checks if all
+	 * items in the LinkItem are present, incrementing the occurrence count
+	 * accordingly. After computing the support value and percentage, it prints the
+	 * support value information, including the total number of occurrences, total
+	 * number of datasets, and the support value percentage.
+	 */
 	public void displaySupportValueHelper(LinkItem items) {
-		
+
 		double computedValue = 0;
 		double numberOfOccurence = 0;
 		double computedValuePercent = 0;
@@ -120,18 +149,18 @@ public class ListofDataSet {
 
 		ItemNode currentItem = items.getHeadNode();
 		int existingCounter = 0;
-		
+
 		while (currentDataSetNode != null) {
 			byItem = currentDataSetNode.getHeadPointer();
 
-			while(currentItem != null) {
+			while (currentItem != null) {
 				if (!ifContains(currentItem.getItemName(), byItem))
 					break;
 				existingCounter++;
 				currentItem = currentItem.getNextPointer();
 			}
-			
-			if(existingCounter == items.getLength())
+
+			if (existingCounter == items.getLength())
 				numberOfOccurence++;
 
 			existingCounter = 0;
@@ -144,6 +173,8 @@ public class ListofDataSet {
 		computedValue = numberOfOccurence / countLength;
 		computedValuePercent = computedValue * 100;
 		//@formatter:off
+      
+      // Print support value information
 		System.out.print("\n+========[SUPPORT VALUE]=======+\n"
 						 + "Total # of Occurence: " + numberOfOccurence
 						 + "\nTotal # of Data Set: " + countLength
@@ -155,13 +186,13 @@ public class ListofDataSet {
 			currentItem = currentItem.getNextPointer();
 		}
 		
-		
+		 // Print support value details
 		System.out.println(supportItem
 					   + " = " + numberOfOccurence + " / " + countLength + " = " + computedValue
 					   + "\n>Support { " + supportItem + " = " + computedValuePercent + "%"
 					   + "\n+==============================+\n");
 		//@formatter:on
-	}
+	}// end of method
 
 	public void determineAssociation(String itemOne, String itemTwo) {
 
@@ -183,12 +214,12 @@ public class ListofDataSet {
 			if (ifContains(itemTwo, byItem))
 				secondItemPresent = true;
 
-			if (firstItemPresent && secondItemPresent) 
+			if (firstItemPresent && secondItemPresent)
 				numberOfBothOccurence += 1;
-			
+
 			firstItemPresent = false;
 			secondItemPresent = false;
-			
+
 			currentDataSetNode = currentDataSetNode.getNextPointer();
 		}
 
@@ -263,9 +294,14 @@ public class ListofDataSet {
 			//@formatter:on
 	}// end method
 
+	/**
+	 * Checks if a given item name exists in a linked list of items. It starts
+	 * traversing the linked list from the provided head node. Returns true if the
+	 * item name is found (ignoring case), otherwise false.
+	 */
 	public boolean ifContains(String name, ItemNode headNode) {
 		for (ItemNode start = headNode; start != null; start = start.getNextPointer()) {
-			if (start.getItemName().equalsIgnoreCase(name)) 
+			if (start.getItemName().equalsIgnoreCase(name))
 				return true;
 		}
 		return false;
