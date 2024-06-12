@@ -42,20 +42,20 @@ public class ListofDataSet {
 		return;
 	}
 
-	/*
-	 * This method return is used for deleting a data set specified by the user. It has a parameter of integer position
-	 * where user specified for deletion. 
-	 * 
-	 * If the position is invalid it will notify the user that the input is invalid.
-	 * 
-	 * If the position is invalid it will show an error message. If the position to delete is on 
-	 * the first node, the second node will be the new head. If the position to delete is on the last node, it will traverse through
-	 * the list and the second to the last of the list will point its next node to null. If the position to delete is neither the 
-	 * first and last node, we traverse the list and find the preceded node and make the next pointer to the next next node. 
-	 * 
-	 * if the data set list is zero make the the isEmptyDataSetList to true 
-	 * 
-	 * after executing make a notification that the deletion is successful;
+	/**
+	 * This method deletes a dataset from the list at the specified position. It
+	 * first checks if the given position is valid, ensuring it is within the range
+	 * of the list. If the position is invalid, it prints "Invalid Position!" and
+	 * exits the method. If the position is the first dataset, it updates the head
+	 * pointer to skip the first dataset. If the position is the last dataset, it
+	 * iterates through the list to find the second-to-last dataset, updates its
+	 * next pointer to null, and sets it as the new tail pointer. If the position is
+	 * between the first and last datasets, it iterates through the list to find the
+	 * dataset before the specified position, then updates its next pointer to skip
+	 * the dataset at the specified position. After deleting the dataset, it
+	 * decrements the count of datasets. If the list becomes empty after deletion,
+	 * it updates a flag indicating that the list is empty. It prints "Successfully
+	 * deleted!" to indicate successful deletion.
 	 */
 	public void deleteDataSet(int position) {
 		int counter = 1;
@@ -87,13 +87,13 @@ public class ListofDataSet {
 			Main.isEmptyDataSetList = true;
 		System.out.println("Successfuly deleted!");
 
-	}
+	}// end of method
 
-	/*
- 	 * display prints the data sets by travsering the data
-         * set list then getting the pointer to the head of the
-	 * item list stored within that data set node to print
-   	 * all of the stored item in that data set.
+	/**
+	 * This method displays the list of datasets along with their respective items.
+	 * It iterates through each dataset, printing its index and the items it
+	 * contains. Each item is separated by a comma, and datasets are separated by
+	 * new lines.
 	 */
 	public void display() {
 		System.out.println("\n+=========[Data Set Lists]========+");
@@ -107,7 +107,7 @@ public class ListofDataSet {
 			numberFormat++;
 		}
 		System.out.print("+=================================+");
-	}
+	}// end of method
 
 	/*
  	 * In order to display the support value, it first displays
@@ -121,50 +121,40 @@ public class ListofDataSet {
 	public void displaySupportValue() {
 		LinkItem itemsAvailable = Main.getItems();
 		LinkItem items = new LinkItem();
-		
+
 		itemsAvailable.display();
 		String itemNumberPrompt = """
 				+=========================================================================+
 				| --  Select the number that corresponds to the item in the item list  -- |
 				|     --  Once done, Press -1 to create the data set and go back  --      |
 				+=========================================================================+
-			    """;
+				   """;
 
 		System.out.print(itemNumberPrompt);
 		for (int i = 0; true; i++) {
-			System.out.print("| "+ (i + 1) + ") ");
+			System.out.print("| " + (i + 1) + ") ");
 			int itemPosition = Main.checkUserInputInteger(itemNumberPrompt);
-			if (itemPosition == -1) break;
+			if (itemPosition == -1)
+				break;
 
 			String temp = itemsAvailable.getItem(itemPosition);
+			System.out.print(temp);
 			items.addToList(temp);
 		} // end for
-		
+
 		displaySupportValueHelper(items);
 	}
 
-	/*
- 	 * displaySupportValueHelper is for printing the support value
-         * computed of the given items. Using a nested while loop,
-	 * in the outer while loop it is used to traverse the DataSet
-         * list and gets the items within it and storing it in the
-	 * ItemNode list, afterwards using the inner while loop
-  	 * it checks if the items in the given parameter contains
-    	 * all of the items stored within it using ifContains. If
-      	 * ifContains returns a false value it will break the inner
-	 * while loop and move to the next one. Else if it finds a
-  	 * true value meaning that the item exist it will increase
-    	 * the existingCounter until it reaches the length of the
-      	 * items list, if it reaches the length it means that all of
-	 * the items within that item list exist in that data set and
-  	 * it will increase the numberOfOccurence of those items.
-    	 * then finally in the computedValue it divides the numberOfOccurence
-      	 * to countLength to identify its support value. The display shows
-	 * a percentage value and a decimal value along with its breakdown
-  	 * of computation
+	/**
+	 * This method calculates the support value and percentage for a given set of
+	 * items in the LinkItem. It iterates through each dataset and checks if all
+	 * items in the LinkItem are present, incrementing the occurrence count
+	 * accordingly. After computing the support value and percentage, it prints the
+	 * support value information, including the total number of occurrences, total
+	 * number of datasets, and the support value percentage.
 	 */
 	public void displaySupportValueHelper(LinkItem items) {
-		
+
 		double computedValue = 0;
 		double numberOfOccurence = 0;
 		double computedValuePercent = 0;
@@ -174,18 +164,18 @@ public class ListofDataSet {
 
 		ItemNode currentItem = items.getHeadNode();
 		int existingCounter = 0;
-		
+
 		while (currentDataSetNode != null) {
 			byItem = currentDataSetNode.getHeadPointer();
 
-			while(currentItem != null) {
+			while (currentItem != null) {
 				if (!ifContains(currentItem.getItemName(), byItem))
 					break;
 				existingCounter++;
 				currentItem = currentItem.getNextPointer();
 			}
-			
-			if(existingCounter == items.getLength())
+
+			if (existingCounter == items.getLength())
 				numberOfOccurence++;
 
 			existingCounter = 0;
@@ -198,6 +188,8 @@ public class ListofDataSet {
 		computedValue = numberOfOccurence / countLength;
 		computedValuePercent = computedValue * 100;
 		//@formatter:off
+      
+      // Print support value information
 		System.out.print("\n+========[SUPPORT VALUE]=======+\n"
 						 + "Total # of Occurence: " + numberOfOccurence
 						 + "\nTotal # of Data Set: " + countLength
@@ -209,13 +201,13 @@ public class ListofDataSet {
 			currentItem = currentItem.getNextPointer();
 		}
 		
-		
+		 // Print support value details
 		System.out.println(supportItem
 					   + " = " + numberOfOccurence + " / " + countLength + " = " + computedValue
 					   + "\n>Support { " + supportItem + " = " + computedValuePercent + "%"
 					   + "\n+==============================+\n");
 		//@formatter:on
-	}
+	}// end of method
 
 	/*
  	 * determineAssociation is for getting the confidence and lift
@@ -250,12 +242,12 @@ public class ListofDataSet {
 			if (ifContains(itemTwo, byItem))
 				secondItemPresent = true;
 
-			if (firstItemPresent && secondItemPresent) 
+			if (firstItemPresent && secondItemPresent)
 				numberOfBothOccurence += 1;
-			
+
 			firstItemPresent = false;
 			secondItemPresent = false;
-			
+
 			currentDataSetNode = currentDataSetNode.getNextPointer();
 		}
 
@@ -330,16 +322,14 @@ public class ListofDataSet {
 			//@formatter:on
 	}// end method
 
-	/*
- 	 * ifContains is used for checking if a specific
-   	 * items exists within the ItemNode list of items.
-     	 * If it exists return true. If the for loop ends
-       	 * without finding it return false meaning it does not
-	 * exist.
+	/**
+	 * Checks if a given item name exists in a linked list of items. It starts
+	 * traversing the linked list from the provided head node. Returns true if the
+	 * item name is found (ignoring case), otherwise false.
 	 */
 	public boolean ifContains(String name, ItemNode headNode) {
 		for (ItemNode start = headNode; start != null; start = start.getNextPointer()) {
-			if (start.getItemName().equalsIgnoreCase(name)) 
+			if (start.getItemName().equalsIgnoreCase(name))
 				return true;
 		}
 		return false;
