@@ -242,21 +242,12 @@ public class ListofDataSet {
 			if (ifContains(itemTwo, byItem))
 				secondItemPresent = true;
 
-			if (firstItemPresent && secondItemPresent)
+			if (firstItemPresent && secondItemPresent) 
 				numberOfBothOccurence += 1;
-
+			
 			firstItemPresent = false;
 			secondItemPresent = false;
-
-			currentDataSetNode = currentDataSetNode.getNextPointer();
-		}
-
-		// singular occurrence B
-		currentDataSetNode = getHeadPointer();
-		while (currentDataSetNode != null) {
-			byItem = currentDataSetNode.getHeadPointer();
-			if (ifContains(itemOne, byItem))
-				numberOfOccurenceOfB += 1;
+			
 			currentDataSetNode = currentDataSetNode.getNextPointer();
 		}
 
@@ -264,8 +255,17 @@ public class ListofDataSet {
 		currentDataSetNode = getHeadPointer();
 		while (currentDataSetNode != null) {
 			byItem = currentDataSetNode.getHeadPointer();
-			if (ifContains(itemTwo, byItem))
+			if (ifContains(itemOne, byItem))
 				numberOfOccurenceOfA += 1;
+			currentDataSetNode = currentDataSetNode.getNextPointer();
+		}
+
+		// singular occurrence B
+		currentDataSetNode = getHeadPointer();
+		while (currentDataSetNode != null) {
+			byItem = currentDataSetNode.getHeadPointer();
+			if (ifContains(itemTwo, byItem))
+				numberOfOccurenceOfB += 1;
 			currentDataSetNode = currentDataSetNode.getNextPointer();
 		}
 
@@ -281,17 +281,17 @@ public class ListofDataSet {
 		computedLiftValue = supportValueOfBoth / (supportValueOfB * supportValueOfA);
 		//@formatter:off
 			System.out.print("\n+========[CONFIDENCE VALUE]========+\n"
-							 + "Total # of Occurence of { " + itemOne + "," + itemTwo +" }: " + numberOfBothOccurence
-							 + "\nTotal # of Occurence of { " + itemOne + " }: " + numberOfOccurenceOfB
+							 + "Total # of Occurence of { " + itemTwo + "," + itemOne +" }: " + numberOfBothOccurence
+							 + "\nTotal # of Occurence of { " + itemTwo + " }: " + numberOfOccurenceOfB
 							 + "\n\n>Condifence { " + itemTwo + "-> " + itemOne + " }" 
-							 + " = " + numberOfBothOccurence + " / " + numberOfOccurenceOfB 
+							 + " = " + numberOfBothOccurence + " / " + numberOfOccurenceOfB
 							 + "\n>Condifence { " + itemTwo + "-> " + itemOne + " }" 
 							 + " = " + String.format("%.2f", computedConfidenceValue)
 							 + "\n>Condifence { " + itemTwo + "-> " + itemOne + " }" 
 							 + " = " + String.format("%.2f", (computedConfidenceValue * 100)) + "%"
 							 + "\n"
 							 + "\n+===========[LIFT VALUE]===========+\n"
-							 + "Total # of Occurence of { " + itemOne + "," + itemTwo +" }: " + numberOfBothOccurence
+							 + "Total # of Occurence of { " + itemTwo + "," + itemOne +" }: " + numberOfBothOccurence
 							 + "\nTotal # of Occurence of { " + itemTwo + " }: " + numberOfOccurenceOfB
 							 + "\nTotal # of Occurence of { " + itemOne + " }: " + numberOfOccurenceOfA
 							 + "\n\n>Lift { " + itemTwo + "-> " + itemOne + " }" 
@@ -321,7 +321,6 @@ public class ListofDataSet {
 			
 			//@formatter:on
 	}// end method
-
 	/**
 	 * Checks if a given item name exists in a linked list of items. It starts
 	 * traversing the linked list from the provided head node. Returns true if the
