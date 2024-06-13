@@ -184,13 +184,13 @@ public class Main {
 			
 			items.display();
 			
-			System.out.print("Enter item B no#: ");
-			int itemB = checkUserInputInteger("Position> ");
-			String Asso_B = items.getItem(itemB);
 			System.out.print("Enter item A no#: ");
 			int itemA = checkUserInputInteger("Position> ");
 			String Asso_A = items.getItem(itemA);
-			data.determineAssociation(Asso_B, Asso_A);
+			System.out.print("Enter item B no#: ");
+			int itemB = checkUserInputInteger("Position> ");
+			String Asso_B = items.getItem(itemB);
+			data.determineAssociation(Asso_A, Asso_B);
 			break;
 		}
 		case 7: {// exit
